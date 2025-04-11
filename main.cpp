@@ -63,7 +63,7 @@ int main (){
 
   /*
   Lines 43 and 59 will be replaced to enter all of the data into a data structure.
-  */
-  
+  Ideally, this will all just be in a function, but I am still unsure about the data structure.
+  */  
   return 0;
 }
