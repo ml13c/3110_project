@@ -1,1 +1,16 @@
 (txt file for now will turn this into google docs)
+we can seperate/explain only the parts that we each worked on and present it in that order
+'''
+You will have to write a project report (about 2-4 pages – single space – 12pt font)
+that includes:
+- design issues, what are the problems and how you solve them
+- data structures you use, the decision behind selecting them
+- algorithms you employ, again with a justification of your decision
+- particular emphasis should be placed on the running time of your algorithm,
+please show the asymptotic costs for each of your algorithm
+- optimization issues: what could you do to further optimize your algorithm
+- you need to specifically address the problem of scalability: would you
+implementation be efficient in the case of very large species collections for
+larger scale geographic area?
+- any other remarks about your design and implementation
+'''
