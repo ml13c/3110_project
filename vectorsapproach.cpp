@@ -9,7 +9,7 @@
 
 using namespace std;
 
-// Function to build the flight graph from the file
+// build graph from given test file
 map<string, vector<string>> buildGraph(const string& filename) {
     map<string, vector<string>> graph;
     ifstream file(filename);
@@ -52,7 +52,7 @@ map<string, vector<string>> buildGraph(const string& filename) {
     return graph;
 }
 
-// Function to print the flight graph in the desired format
+// prints the graph in the same from to format
 void printGraph(const map<string, set<string>>& graph) {
     for (const auto& [origin, destinations] : graph) {
         cout << "From:  " << origin << "\nTo  :  ";
@@ -66,7 +66,9 @@ void printGraph(const map<string, set<string>>& graph) {
     }
 }
 
-//q1
+/*
+Question 1: Find the shortest route between two cities with a maximum number of connections.
+*/
 bool findShortestRoute(const map<string, vector<string>>& graph,
     const string& start,
     const string& goal,
@@ -121,7 +123,9 @@ bool findShortestRoute(const map<string, vector<string>>& graph,
          << " within " << maxConnections << " connections.\n";
     return false;
 }
-
+/*
+Question 2: Find a route from one city to another, passing through two specific cities.
+*/
 bool findRouteThrough(const map<string, vector<string>>& graph,
     const string& start,
     const string& goal,
@@ -168,6 +172,17 @@ bool findRouteThrough(const map<string, vector<string>>& graph,
          << " through both " << mustPass1 << " and " << mustPass2 << ".\n";
     return false;
 }
+/*
+Question 3: Find all possible cities that can be visited from a given city while
+returning to the same city only once.
+*/
+/*
+bool isSafetoVisit(const string& city, const vector<string>& path) {
+    return find(path.begin(), path.end(), city) == path.end();
+}
+bool findPossibleCities(const map<string, vector<string>>& graph,
+    const string& start) 
+*/
 
 int main() {
     string filename = "flight.txt";
