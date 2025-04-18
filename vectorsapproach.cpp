@@ -121,14 +121,63 @@ bool findShortestRoute(const map<string, vector<string>>& graph,
          << " within " << maxConnections << " connections.\n";
     return false;
 }
+
+bool findRouteThrough(const map<string, vector<string>>& graph,
+    const string& start,
+    const string& goal,
+    const string& mustPass1,
+    const string& mustPass2) {
+    queue<tuple<string, vector<string>, bool, bool>> q;
+    q.push({start, {start}, start == mustPass1, start == mustPass2});
+    set<tuple<string, bool, bool>> visited; // To avoid revisiting same state
+
+    while (!q.empty()) {
+        auto [current, path, seenB, seenC] = q.front();
+        q.pop();
+
+        if (current == goal && seenB && seenC) {
+            cout << "Shortest path from " << start << " to " << goal
+                 << " through " << mustPass1 << " and " << mustPass2
+                 << ":\n";
+            for (size_t i = 0; i < path.size(); ++i) {
+                cout << path[i];
+                if (i < path.size() - 1) cout << " -> ";
+            }
+            cout << "\nConnections: " << path.size() - 1 << endl;
+            return true;
+        }
+
+        if (graph.find(current) != graph.end()) {
+            for (const string& neighbor : graph.at(current)) {
+                // Avoid cycles by checking full state
+                bool newSeenB = seenB || (neighbor == mustPass1);
+                bool newSeenC = seenC || (neighbor == mustPass2);
+                auto stateKey = make_tuple(neighbor, newSeenB, newSeenC);
+
+                if (visited.find(stateKey) == visited.end()) {
+                    visited.insert(stateKey);
+                    vector<string> newPath = path;
+                    newPath.push_back(neighbor);
+                    q.push({neighbor, newPath, newSeenB, newSeenC});
+                }
+            }
+        }
+    }
+
+    cout << "No valid path from " << start << " to " << goal
+         << " through both " << mustPass1 << " and " << mustPass2 << ".\n";
+    return false;
+}
+
 int main() {
     string filename = "flight.txt";
     int choice,  maxConnections;
-    string fromCity, toCity;
+    string fromCity, toCity, city1, city2;
     map<string, vector<string>> graph = buildGraph(filename);
 
     cout << "Select what you want to do:\n";
     cout << "1. Find the shortest route\n";
+    cout << "2. Find route through two cities\n";
     cout << "5. Print the full graph\n";
     cin >> choice;
     cin.ignore();
@@ -144,6 +193,19 @@ int main() {
             cin >> maxConnections;
             cout << "Finding the shortest route...\n";
             findShortestRoute(graph, fromCity, toCity, maxConnections);
+            break;
+        case 2:
+            cout << "Input two cities to find path\n";
+            cout << "From:";
+            getline(cin, fromCity);
+            cout << "To:";
+            getline(cin, toCity);
+            cout << "Through which cities(1)?\n";
+            getline(cin, city1);
+            cout << "Through which cities(2)?\n";
+            getline(cin, city2);
+            cout << "Finding route(if possible)...\n";
+            findRouteThrough(graph, fromCity, toCity, city1, city2);
             break;
         case 5:
             cout << "Printing the full graph...\n";
