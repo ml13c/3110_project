@@ -123,14 +123,35 @@ bool findShortestRoute(const map<string, vector<string>>& graph,
 }
 int main() {
     string filename = "flight.txt";
+    int choice,  maxConnections;
+    string fromCity, toCity;
     map<string, vector<string>> graph = buildGraph(filename);
 
-    // Test the shortest route function
-    string start = "Moscow, Russia";
-    string goal = "Hong Kong, SAR";
-    int maxConnections = 4;
-
-    findShortestRoute(graph, start, goal, maxConnections);
-
+    cout << "Select what you want to do:\n";
+    cout << "1. Find the shortest route\n";
+    cout << "5. Print the full graph\n";
+    cin >> choice;
+    cin.ignore();
+    switch(choice)
+    {
+        case 1:
+            cout << "Input two cities to find path\n";
+            cout << "From:";
+            getline(cin, fromCity);
+            cout << "To:";
+            getline(cin, toCity);
+            cout << "Maximum number of connections?\n";
+            cin >> maxConnections;
+            cout << "Finding the shortest route...\n";
+            findShortestRoute(graph, fromCity, toCity, maxConnections);
+            break;
+        case 5:
+            cout << "Printing the full graph...\n";
+            // printGraph(graph);
+            break;
+        default:
+            cout << "Invalid option.\n";
+            return 1;
+    }
     return 0;
 }
