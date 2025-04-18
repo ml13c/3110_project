@@ -178,6 +178,8 @@ int main() {
     cout << "Select what you want to do:\n";
     cout << "1. Find the shortest route\n";
     cout << "2. Find route through two cities\n";
+    cout << "3. Visit all possible cities from Origin City\n";
+    cout << "4. 3 cities friends, minumum connections between to meet at same city\n";
     cout << "5. Print the full graph\n";
     cin >> choice;
     cin.ignore();
@@ -207,6 +209,9 @@ int main() {
             cout << "Finding route(if possible)...\n";
             findRouteThrough(graph, fromCity, toCity, city1, city2);
             break;
+        case 3:
+            cout << "Input\n";
+        case 4:
         case 5:
             cout << "Printing the full graph...\n";
             // printGraph(graph);
