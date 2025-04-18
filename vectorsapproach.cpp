@@ -210,8 +210,22 @@ int main() {
             findRouteThrough(graph, fromCity, toCity, city1, city2);
             break;
         case 3:
-            cout << "Input\n";
+            cout << "Select City you want to start off and end up back in\n";
+            getline(cin, fromCity);
+            cout << "Finding all possible cities...\n";
+            //findPossibleCities(graph, fromCity);
+            break;
         case 4:
+            cout << "Input three cities to find min path for each\n";
+            cout << "Your City";
+            getline(cin, fromCity);
+            cout << "Friend 2 City\n";
+            getline(cin, city1);
+            cout << "Friend 3 City\n";
+            getline(cin, city2);
+            cout << "Finding besty city and route(...\n";
+            //findBestCity(graph, fromCity, city1, city2);
+            break;
         case 5:
             cout << "Printing the full graph...\n";
             // printGraph(graph);
