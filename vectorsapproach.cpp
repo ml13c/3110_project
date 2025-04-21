@@ -9,7 +9,7 @@
 
 using namespace std;
 
-// build graph from given test file
+// Function to build the flight graph from the file
 map<string, vector<string>> buildGraph(const string& filename) {
     map<string, vector<string>> graph;
     ifstream file(filename);
@@ -52,7 +52,7 @@ map<string, vector<string>> buildGraph(const string& filename) {
     return graph;
 }
 
-// prints the graph in the same from to format
+// Function to print the flight graph in the desired format
 void printGraph(const map<string, set<string>>& graph) {
     for (const auto& [origin, destinations] : graph) {
         cout << "From:  " << origin << "\nTo  :  ";
@@ -66,9 +66,7 @@ void printGraph(const map<string, set<string>>& graph) {
     }
 }
 
-/*
-Question 1: Find the shortest route between two cities with a maximum number of connections.
-*/
+//q1
 bool findShortestRoute(const map<string, vector<string>>& graph,
     const string& start,
     const string& goal,
@@ -123,9 +121,7 @@ bool findShortestRoute(const map<string, vector<string>>& graph,
          << " within " << maxConnections << " connections.\n";
     return false;
 }
-/*
-Question 2: Find a route from one city to another, passing through two specific cities.
-*/
+
 bool findRouteThrough(const map<string, vector<string>>& graph,
     const string& start,
     const string& goal,
@@ -172,6 +168,7 @@ bool findRouteThrough(const map<string, vector<string>>& graph,
          << " through both " << mustPass1 << " and " << mustPass2 << ".\n";
     return false;
 }
+
 /*
 Question 3: Find all possible cities that can be visited from a given city while
 returning to the same city only once.
@@ -183,6 +180,99 @@ bool isSafetoVisit(const string& city, const vector<string>& path) {
 bool findPossibleCities(const map<string, vector<string>>& graph,
     const string& start) 
 */
+
+void bfs(const map<string, vector<string>>& graph, const string& start, map<string, int>& distance, map<string, string>& parent) {
+    queue<string> q;
+    distance[start] = 0;
+    q.push(start);
+
+    while (!q.empty()) {
+        string current = q.front();
+        q.pop();
+
+        if (graph.find(current) == graph.end()) continue;
+
+        const vector<string>& neighbors = graph.at(current);
+        for (size_t i = 0; i < neighbors.size(); ++i) {
+            const string& neighbor = neighbors[i];
+            if (distance.find(neighbor) == distance.end()) {
+                distance[neighbor] = distance[current] + 1;
+                parent[neighbor] = current;
+                q.push(neighbor);
+            }
+        }
+    }
+}
+
+// Helper function to reconstruct and print path from a start city to a destination
+void printPath(const string& start, const string& destination, const map<string, string>& parent) {
+    stack<string> path;
+    string current = destination;
+
+    while (current != start) {
+        path.push(current);
+        current = parent.at(current);
+    }
+    path.push(start);
+
+    while (!path.empty()) {
+        cout << path.top();
+        path.pop();
+        if (!path.empty()) cout << " -> ";
+    }
+    cout << "\n";
+}
+
+// Main function to find the best meeting city
+void findBestCity(const map<string, vector<string>>& graph, const string& cityA, const string& cityB, const string& cityC) {
+    map<string, int> distA, distB, distC;
+    map<string, string> parentA, parentB, parentC;
+
+    bfs(graph, cityA, distA, parentA);
+    bfs(graph, cityB, distB, parentB);
+    bfs(graph, cityC, distC, parentC);
+
+    string bestCity = "";
+    int minTotalConnections = INT_MAX;
+
+    map<string, vector<string>>::const_iterator it;
+    for (it = graph.begin(); it != graph.end(); ++it) {
+        const string& city = it->first;
+
+        if (city == cityA || city == cityB || city == cityC) {
+            continue;
+        }
+
+        if (distA.count(city) > 0 && distB.count(city) > 0 && distC.count(city) > 0) {
+            int total = distA[city] + distB[city] + distC[city];
+            if (total < minTotalConnections) {
+                minTotalConnections = total;
+                bestCity = city;
+            }
+        }
+    }
+
+    if (bestCity == "") {
+        cout << "No common meeting city found for " << cityA << ", " << cityB << ", and " << cityC << ".\n";
+        return;
+    }
+
+    cout << "You three should meet at: " << bestCity << "\n\n";
+
+    cout << "Route for " << cityA << ":\n";
+    printPath(cityA, bestCity, parentA);
+    cout << "Connections: " << distA[bestCity] << "\n\n";
+
+    cout << "Route for " << cityB << ":\n";
+    printPath(cityB, bestCity, parentB);
+    cout << "Connections: " << distB[bestCity] << "\n\n";
+
+    cout << "Route for " << cityC << ":\n";
+    printPath(cityC, bestCity, parentC);
+    cout << "Connections: " << distC[bestCity] << "\n\n";
+
+    cout << "Total connections required: " << minTotalConnections << "\n";
+}
 
 int main() {
     string filename = "flight.txt";
@@ -232,14 +322,14 @@ int main() {
             break;
         case 4:
             cout << "Input three cities to find min path for each\n";
-            cout << "Your City";
+            cout << "Your City: ";
             getline(cin, fromCity);
-            cout << "Friend 2 City\n";
+            cout << "Friend 1 City: ";
             getline(cin, city1);
-            cout << "Friend 3 City\n";
+            cout << "Friend 2 City: ";
             getline(cin, city2);
             cout << "Finding besty city and route(...\n";
-            //findBestCity(graph, fromCity, city1, city2);
+            findBestCity(graph, fromCity, city1, city2);
             break;
         case 5:
             cout << "Printing the full graph...\n";
