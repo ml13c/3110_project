@@ -1,0 +1,103 @@
+From:  Moscow, Russia
+To  :  Hong Kong, SAR
+       New York City, United States
+       Seoul, South Korea
+       London, United Kingdom
+       St. Petersburg, Russia
+       Copenhagen, Denmark
+       Singapore, Singapore
+From:  Seoul, South Korea
+To  :  Singapore, Singapore
+       Copenhagen, Denmark
+       Geneva, Switzerland
+       Milan, Italy
+       New York City, United States
+       Zurich, Switzerland
+From:  Tokyo, Japan
+To  :  Paris, France
+       London, United Kingdom
+       Moscow, Russia
+       Beijing, People's Republic of China
+From:  London, United Kingdom
+To  :  Osaka, Japan
+       Seoul, South Korea
+       Istanbul, Turkey
+From:  Osaka, Japan
+To  :  Copenhagen, Denmark
+       Paris, France
+       Dublin, Ireland
+       St. Petersburg, Russia
+       Geneva, Switzerland
+       London, United Kingdom
+       Zurich, Switzerland
+       Hong Kong, SAR
+From:  Geneva, Switzerland
+To  :  London, United Kingdom
+       New York City, United States
+       Beijing, People's Republic of China
+From:  Zurich, Switzerland
+To  :  Hong Kong, SAR
+From:  Oslo, Norway
+To  :  New York City, United States
+       Beijing, People's Republic of China
+       London, United Kingdom
+       Paris, France
+From:  New York City, United States
+To  :  Oslo, Norway
+       Paris, France
+       Dublin, Ireland
+From:  St. Petersburg, Russia
+To  :  Milan, Italy
+       Shanghai, People's Republic of China
+       Tokyo, Japan
+       Zurich, Switzerland
+       Geneva, Switzerland
+       Dublin, Ireland
+       Osaka, Japan
+       Sydney, Australia
+       London, United Kingdom
+From:  Milan, Italy
+To  :  Geneva, Switzerland
+       Zurich, Switzerland
+       Singapore, Singapore
+       St. Petersburg, Russia
+       Sydney, Australia
+From:  Beijing, People's Republic of China
+To  :  Milan, Italy
+       Seoul, South Korea
+From:  Istanbul, Turkey
+To  :  Geneva, Switzerland
+       Zurich, Switzerland
+       Moscow, Russia
+From:  Paris, France
+To  :  Dublin, Ireland
+       Singapore, Singapore
+       Milan, Italy
+       Beijing, People's Republic of China
+       London, United Kingdom
+From:  Singapore, Singapore
+To  :  Beijing, People's Republic of China
+       Shanghai, People's Republic of China
+       Sydney, Australia
+       Dublin, Ireland
+       Zurich, Switzerland
+       Hong Kong, SAR
+From:  Dublin, Ireland
+To  :  Osaka, Japan
+       Istanbul, Turkey
+From:  Sydney, Australia
+To  :  Geneva, Switzerland
+       Zurich, Switzerland
+       Shanghai, People's Republic of China
+       Istanbul, Turkey
+       Paris, France
+       Copenhagen, Denmark
+From:  Shanghai, People's Republic of China
+To  :  Oslo, Norway
+       Osaka, Japan
+       St. Petersburg, Russia
+       Seoul, South Korea
+       Sydney, Australia
+       London, United Kingdom
+       Geneva, Switzerland
+       New York City, United States

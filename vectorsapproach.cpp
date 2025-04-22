@@ -53,7 +53,7 @@ map<string, vector<string>> buildGraph(const string& filename) {
 }
 
 // Function to print the flight graph in the desired format
-void printGraph(const map<string, set<string>>& graph) {
+void printGraph(const map<string, vector<string>>& graph) {
     for (const auto& [origin, destinations] : graph) {
         cout << "From:  " << origin << "\nTo  :  ";
         bool first = true;
@@ -181,6 +181,12 @@ bool findPossibleCities(const map<string, vector<string>>& graph,
     const string& start) 
 */
 
+/*
+Search for all possible paths from the start city. This will be used to check if other paths from other 2 cities intersect 
+with one another in nodes. The goal is to find a node that is common to all three cities. 
+We want to find an end node for all paths to meet at. The goal is to keep it to a
+minimum amount of travel between connections/nodes if there is one between the 3 total cities.
+*/
 void bfs(const map<string, vector<string>>& graph, const string& start, map<string, int>& distance, map<string, string>& parent) {
     queue<string> q;
     distance[start] = 0;
@@ -273,7 +279,6 @@ void findBestCity(const map<string, vector<string>>& graph, const string& cityA,
 
     cout << "Total connections required: " << minTotalConnections << "\n";
 }
-
 int main() {
     string filename = "flight.txt";
     int choice,  maxConnections;
@@ -333,7 +338,9 @@ int main() {
             break;
         case 5:
             cout << "Printing the full graph...\n";
-            // printGraph(graph);
+            printGraph(graph);
+            cout << graph.size() << " cities in total.\n";
+            cout << "Done.\n";
             break;
         default:
             cout << "Invalid option.\n";
