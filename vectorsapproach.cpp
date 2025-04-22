@@ -83,7 +83,7 @@ bool findShortestRoute(const map<string, vector<string>>& graph,
         string current = q.front();
         q.pop();
 
-        if (current == goal && distance[current] <= maxConnections) {
+        if ((current == goal && distance[current]) <= maxConnections) {
             // Reconstruct and print the path
             stack<string> path;
             string temp = goal;
