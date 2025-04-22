@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <queue>
 #include <stack>
-
+#include <climits> // needed for INT_MAX and running on Cell Machines
 using namespace std;
 
 // Function to build the flight graph from the file
