@@ -27,11 +27,15 @@ Creating the Graph
 Building the main function and UI:
     We wanted to create a straight to the point UI. To do this we implemented a simple switch case in our main functoin and requested input where needed depending on which task was asked to complete. As an extra option we included option 5 for us when debugging. Considering how the testing was not just going to consists of one flight.txt file we decided to keep it in order to make it easier for the user to input their own flight.txt file. Depending on the selection of 1-4 it answered a different question that we were tasked. 
 Solution to Question 1:
+
     In question 1 we were asked if it was possible to fly between two cities with less than x connections between them. To do this we received input asking the two desired cities and the maximum amount of connections. After this we sent it to a function to find if it was possible to do this under x amount of connections. This function is called findShortestRoute and accepts these 3 parameters. Using our variable distance and a stack, path, we can keep a counter of the amount of connections to ensure it is less than x connections. This same stack is not just used to count, but for popping and printing our cities to provide us a route less than or equal to x connections. 
 Solution to Question 2:
-    Our next tasks is to provide a route that goes from A-Z that goes through cities, 'H' and 'I'. It doesnt matter what order it is so long as H and I are on route to Z from A. To achieve this first we must check if A-Z is even possible. If it is then we need to find a path that contains our two desired cities. To do this we used a queue and logic with the stack similar to question 1 to print out the path. To find the actual path however, we used our 
+
+    Our next tasks is to provide a route that goes from A-Z that goes through cities, 'H' and 'I'. It doesnt matter what order it is so long as H and I are on route to Z from A. To achieve this first we must check if A-Z is even possible. If it is then we need to find a path that contains our two desired cities. To do this we used a queue and logic with the stack similar to question 1 to print out the path. To find the actual path however, we store our 
 Solution to Question 3:
+
     The third task requires us to find as many nodes as we can visit in a single path and return back our starting position only once.
 Solution to Question 4:
+
     Our last task involves finding the best city(if possible) for 3 people to meetup in. These routes should be the ones with the least amount of connections or distance travelled. In order to ensure that we would find the best path we needeed a way to check the paths for each starint point. To do this we implemented the bfs algorithm. From here we used this on each statring point and compared 
 
