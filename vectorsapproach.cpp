@@ -165,13 +165,72 @@ bool findRouteThrough(const map<string, vector<string>>& graph, const string& st
 Question 3: Find all possible cities that can be visited from a given city while
 returning to the same city only once.
 */
-/*
-bool isSafetoVisit(const string& city, const vector<string>& path) {
-    return find(path.begin(), path.end(), city) == path.end();
+map<string, int> cityIndex;
+vector<vector<int>> buildAdjMatrix(const map<string, vector<string>>& graph, int& x) {
+    int idx = 0;
+    for (const auto& [city, _] : graph) {
+        cityIndex[city] = idx++;
+    }
+    x = cityIndex.size();
+    vector<vector<int>> adjMatrix(x, vector<int>(x, 0));
+
+    for (const auto& [origin, destinations] : graph) {
+        int u = cityIndex[origin];
+        for (const string& dest : destinations) {
+            int v = cityIndex[dest];
+            adjMatrix[u][v] = 1;
+        }
+    }
+
+    return adjMatrix;
 }
-bool findPossibleCities(const map<string, vector<string>>& graph,
-    const string& start) 
-*/
+
+// Utility function to check if a vertex can be added to the Hamiltonian path
+bool isSafe(int v, const vector<vector<int>>& graph, vector<int>& path, int pos) {
+    if (graph[path[pos - 1]][v] == 0) return false;
+    for (int i = 0; i < pos; i++) if (path[i] == v) return false;
+    return true;
+}
+
+// Recursive function to solve the Hamiltonian path problem
+bool hamCycleUtil(const vector<vector<int>>& graph, vector<int>& path, int pos) {
+    if (pos == path.size()) {
+        if (graph[path[pos - 1]][path[0]] == 1) return true;
+        else return false;
+    }
+
+    for (int v = 1; v < graph.size(); v++) {
+        if (isSafe(v, graph, path, pos)) {
+            path[pos] = v;
+            if (hamCycleUtil(graph, path, pos + 1)) return true;
+            path[pos] = -1;
+        }
+    }
+
+    return false;
+}
+
+// Function to find a Hamiltonian cycle and print the solution
+void findCycle(const vector<vector<int>>& graph) {
+    vector<int> path(graph.size(), -1);
+    path[0] = 0;
+
+    if (!hamCycleUtil(graph, path, 1)) {
+        cout << "No Hamiltonian cycle exists." << endl;
+        return;
+    }
+
+    cout << "Hamiltonian cycle found: ";
+    for (int cityIdx : path) {
+        for (const auto& [city, idx] : cityIndex) {
+            if (idx == cityIdx) {
+                cout << city << " ";
+                break;
+            }
+        }
+    }
+    cout << endl;
+}
 
 /* Question 4: Find the best city to meet at for three friends.
 Search for all possible paths from the start city. This will be used to check if other paths from other 2 cities intersect 
@@ -273,9 +332,10 @@ void findBestCity(const map<string, vector<string>>& graph, const string& cityA,
 }
 int main() {
     string filename = "flight.txt";
-    int choice,  maxConnections;
+    int choice,  maxConnections, x;
     string fromCity, toCity, city1, city2;
     map<string, vector<string>> graph = buildGraph(filename);
+    vector<vector<int>> adjMatrix = buildAdjMatrix(graph, x);
 
     cout << "Select what you want to do:\n";
     cout << "1. Find the shortest route\n";
@@ -315,7 +375,7 @@ int main() {
             cout << "Select City you want to start off and end up back in\n";
             getline(cin, fromCity);
             cout << "Finding all possible cities...\n";
-            //findPossibleCities(graph, fromCity);
+            findCycle(adjMatrix);
             break;
         case 4:
             cout << "Input three cities to find min path for each\n";
