@@ -17,7 +17,6 @@ map<string, vector<string>> buildGraph(const string& filename) {
     bool readingDestinations = false;
 
     while (getline(file, line)) {
-        // Trim whitespace
         line.erase(remove(line.begin(), line.end(), '\r'), line.end());
         line.erase(remove(line.begin(), line.end(), '\n'), line.end());
         line.erase(0, line.find_first_not_of(" \t"));
@@ -67,10 +66,7 @@ void printGraph(const map<string, vector<string>>& graph) {
 }
 
 //q1
-bool findShortestRoute(const map<string, vector<string>>& graph,
-    const string& start,
-    const string& goal,
-    int maxConnections) {
+bool findShortestRoute(const map<string, vector<string>>& graph, const string& start, const string& goal, int maxConnections) {
 
     map<string, string> parent;
     map<string, int> distance;
@@ -121,15 +117,11 @@ bool findShortestRoute(const map<string, vector<string>>& graph,
          << " within " << maxConnections << " connections.\n";
     return false;
 }
-
-bool findRouteThrough(const map<string, vector<string>>& graph,
-    const string& start,
-    const string& goal,
-    const string& mustPass1,
-    const string& mustPass2) {
+//q2
+bool findRouteThrough(const map<string, vector<string>>& graph, const string& start, const string& goal, const string& mustPass1, const string& mustPass2) {
     queue<tuple<string, vector<string>, bool, bool>> q;
     q.push({start, {start}, start == mustPass1, start == mustPass2});
-    set<tuple<string, bool, bool>> visited; // To avoid revisiting same state
+    set<tuple<string, bool, bool>> visited; // To avoid revisiting same
 
     while (!q.empty()) {
         auto [current, path, seenB, seenC] = q.front();
@@ -181,7 +173,7 @@ bool findPossibleCities(const map<string, vector<string>>& graph,
     const string& start) 
 */
 
-/*
+/* Question 4: Find the best city to meet at for three friends.
 Search for all possible paths from the start city. This will be used to check if other paths from other 2 cities intersect 
 with one another in nodes. The goal is to find a node that is common to all three cities. 
 We want to find an end node for all paths to meet at. The goal is to keep it to a
@@ -210,7 +202,7 @@ void bfs(const map<string, vector<string>>& graph, const string& start, map<stri
     }
 }
 
-// Helper function to reconstruct and print path from a start city to a destination
+//function to help print path from a start city to destination
 void printPath(const string& start, const string& destination, const map<string, string>& parent) {
     stack<string> path;
     string current = destination;
@@ -229,7 +221,7 @@ void printPath(const string& start, const string& destination, const map<string,
     cout << "\n";
 }
 
-// Main function to find the best meeting city
+// function to find the best city to meet at for three friends
 void findBestCity(const map<string, vector<string>>& graph, const string& cityA, const string& cityB, const string& cityC) {
     map<string, int> distA, distB, distC;
     map<string, string> parentA, parentB, parentC;
