@@ -210,7 +210,7 @@ bool hamCycleUtil(const vector<vector<int>>& graph, vector<int>& path, int pos) 
     return false;
 }
 
-// Function to find a Hamiltonian cycle and print the solution
+// function to find a Hamiltonian cycle and print the solution
 void findCycle(const vector<vector<int>>& graph) {
     vector<int> path(graph.size(), -1);
     path[0] = 0;
