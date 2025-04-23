@@ -6,10 +6,22 @@
 #include <algorithm>
 #include <queue>
 #include <stack>
-#include <climits> // needed for INT_MAX and running on Cell Machines
+#include <climits> // NEEDED for INT_MAX and running on Cell Machines
+/*
+    CSCE 3110: Algorithms and Data Structures (Project Flight Graph)
+    This program reads a flight graph from a file, allowing users to find the shortest route between cities, 
+    find routes through specific cities, find the longest possible path to explore cities while returning to origin,
+    and determine the best city to meet in for 3 friends while maintaining a minumum amount of travel between connections.
+    For more clear understanding, please refer to the comments in the code.
+    @ author: Marcus, Haley, and Mario 
+*/
 using namespace std;
 
-// Function to build the flight graph from the file
+/*
+This function build the graph from the file. It reads the file line by line, extracting the origin and destination cities
+into a map in the format of <origin, vector<destinations>>. It's important that the file is formatted correctly like flight.txt as that is how the graph is built.
+This graph is used for all the solution functions in this program.
+*/
 map<string, vector<string>> buildGraph(const string& filename) {
     map<string, vector<string>> graph;
     ifstream file(filename);
@@ -51,7 +63,10 @@ map<string, vector<string>> buildGraph(const string& filename) {
     return graph;
 }
 
-// Function to print the flight graph in the desired format
+/*
+This function prints the graph back out in the format it was read in through the buildGraph function.
+This is only used for debugging purposes to check if the graph was built correctly and option 5 in the switch statement UI.
+*/
 void printGraph(const map<string, vector<string>>& graph) {
     for (const auto& [origin, destinations] : graph) {
         cout << "From:  " << origin << "\nTo  :  ";
@@ -65,7 +80,10 @@ void printGraph(const map<string, vector<string>>& graph) {
     }
 }
 
-//q1
+/*SOLUTION TO QUESTION 1
+This function finds the shortest route between two cities in the flight graph.
+It uses a breadthfirst search algorithm to explore the graph while keeping in mind the distance from the start city to each city visited.
+*/
 bool findShortestRoute(const map<string, vector<string>>& graph, const string& start, const string& goal, int maxConnections) {
 
     map<string, string> parent;
@@ -80,13 +98,13 @@ bool findShortestRoute(const map<string, vector<string>>& graph, const string& s
         q.pop();
 
         if ((current == goal && distance[current]) <= maxConnections) {
-            // Reconstruct and print the path
+            // reconstruct the path
             stack<string> path;
             string temp = goal;
             while (temp != start) {
                 path.push(temp);
                 temp = parent[temp];
-            }
+            }// rebuild the path from goal to start
             path.push(start);
 
             cout << "Path from " << start << " to " << goal << " with "
@@ -117,11 +135,15 @@ bool findShortestRoute(const map<string, vector<string>>& graph, const string& s
          << " within " << maxConnections << " connections.\n";
     return false;
 }
-//q2
+/*SOLUTION TO QUESTION 2
+This function finds a route from the start city to the goal city while passing through two specified cities.
+It uses bfs to explore the graph, keeping track of whether the required cities have yet to be visited. Takes in 5 parameters:
+the generated graph to iterate through, and the 4 cities from the citys to check for a route through.
+*/
 bool findRouteThrough(const map<string, vector<string>>& graph, const string& start, const string& goal, const string& mustPass1, const string& mustPass2) {
     queue<tuple<string, vector<string>, bool, bool>> q;
     q.push({start, {start}, start == mustPass1, start == mustPass2});
-    set<tuple<string, bool, bool>> visited; // To avoid revisiting same
+    set<tuple<string, bool, bool>> visited; // To avoid processing same city and prevents loop
 
     while (!q.empty()) {
         auto [current, path, seenB, seenC] = q.front();
@@ -161,9 +183,11 @@ bool findRouteThrough(const map<string, vector<string>>& graph, const string& st
     return false;
 }
 
-/*
-Question 3: Find all possible cities that can be visited from a given city while
-returning to the same city only once.
+/*SOLUTION TO QUESTION 3
+This function finds all possible cities that can be visited from a given city while returning to the same city only once.
+It used depth first search to explore the graph, keeping track of visited cities and the current path.
+It also checks if the current city is the same as the start city to determine if a cycle has been found. In order check if a vertex can be added to the path,
+it checks if the vertex is already in the path and if there is an edge between the last city in the path and the current city.
 */
 map<string, int> cityIndex;
 vector<vector<int>> buildAdjMatrix(const map<string, vector<string>>& graph, int& x) {

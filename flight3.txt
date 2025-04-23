@@ -1,0 +1,18 @@
+From:  A, Start
+To  :  X, Node1
+From:  X, Node1
+To  :  C, Goal1
+       B, Goal2
+From:  B, Goal2
+To  :  Y, Node3
+       R, Node4
+From:  Y, Node3
+To  :  Z, Node4
+From:  Z, Node4
+To  :  C, Goal1
+From:  C, Goal1
+To  :  D, End
+       R, Node4
+From:  R, Node4
+To  :  D, End 
+
