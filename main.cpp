@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <queue>
 #include <stack>
-#include <climits> // NEEDED for INT_MAX and running on Cell Machines
+#include <climits> // NEEDED for INT_MAX and running on Linux/Cell Machines
 /*
     CSCE 3110: Algorithms and Data Structures (Project Flight Graph)
     This program reads a flight graph from a file, allowing users to find the shortest route between cities, 
@@ -86,25 +86,24 @@ It uses a breadthfirst search algorithm to explore the graph while keeping in mi
 */
 bool findShortestRoute(const map<string, vector<string>>& graph, const string& start, const string& goal, int maxConnections) {
 
-    map<string, string> parent;
-    map<string, int> distance;
-    queue<string> q;
+    map<string, string> parent;// to reconstruct the path and store origin of each city visited
+    map<string, int> distance;// counter for amount of connections done
+    queue<string> q; //for bfs to find shortest path as answer
 
     q.push(start);
     distance[start] = 0;
-
+    // traverses the graph using bfs
     while (!q.empty()) {
         string current = q.front();
         q.pop();
-
+        // if the requirements are left and the goal is reached, we can stop searching and print out the path
         if ((current == goal && distance[current]) <= maxConnections) {
-            // reconstruct the path
-            stack<string> path;
+            stack<string> path;//used to print out path in correct order
             string temp = goal;
             while (temp != start) {
                 path.push(temp);
                 temp = parent[temp];
-            }// rebuild the path from goal to start
+            }
             path.push(start);
 
             cout << "Path from " << start << " to " << goal << " with "
@@ -118,12 +117,12 @@ bool findShortestRoute(const map<string, vector<string>>& graph, const string& s
             return true;
         }
 
-        if (graph.find(current) != graph.end()) {
-            for (const auto& neighbor : graph.at(current)) {
+        if (graph.find(current) != graph.end()) { // checking if the current city is the end or has no neighbors
+            for (const auto& neighbor : graph.at(current)) { // any reference to the current node is its neighbor so we check the 'to' cities(paths)
                 if (distance.find(neighbor) == distance.end()) {
-                    parent[neighbor] = current;
-                    distance[neighbor] = distance[current] + 1;
-                    if (distance[neighbor] <= maxConnections) {
+                    parent[neighbor] = current; // when visitng a new city, we set the parent to the current city to keep track of the path
+                    distance[neighbor] = distance[current] + 1; // increment the distance from the start city to the current city as we move further from start
+                    if (distance[neighbor] <= maxConnections) { // only searches for neighbors if the distance is less than or equal to the max connections
                         q.push(neighbor);
                     }
                 }
@@ -141,15 +140,16 @@ It uses bfs to explore the graph, keeping track of whether the required cities h
 the generated graph to iterate through, and the 4 cities from the citys to check for a route through.
 */
 bool findRouteThrough(const map<string, vector<string>>& graph, const string& start, const string& goal, const string& mustPass1, const string& mustPass2) {
-    queue<tuple<string, vector<string>, bool, bool>> q;
-    q.push({start, {start}, start == mustPass1, start == mustPass2});
-    set<tuple<string, bool, bool>> visited; // To avoid processing same city and prevents loop
+    queue<tuple<string, vector<string>, bool, bool>> q;// queue to store the current city, path taken, and if the must pass cities have been seen
+    q.push({start, {start}, start == mustPass1, start == mustPass2});// initial starting points
+    set<tuple<string, bool, bool>> visited; // used tuple since we need to check for 3 variables (city, must pass 1, must pass 2)
+    // ^ this allows for us to pass through the same city to find the shortest path.
 
     while (!q.empty()) {
-        auto [current, path, seenB, seenC] = q.front();
+        auto [current, path, seenB, seenC] = q.front();// get the current city, path taken, and if the must pass cities have been seen
         q.pop();
 
-        if (current == goal && seenB && seenC) {
+        if (current == goal && seenB && seenC) {// stops searching if the goal is reached and both must pass cities have been seen
             cout << "Shortest path from " << start << " to " << goal
                  << " through " << mustPass1 << " and " << mustPass2
                  << ":\n";
@@ -161,14 +161,14 @@ bool findRouteThrough(const map<string, vector<string>>& graph, const string& st
             return true;
         }
 
-        if (graph.find(current) != graph.end()) {
+        if (graph.find(current) != graph.end()) {// bfs logic like from question 1
             for (const string& neighbor : graph.at(current)) {
                 // Avoid cycles by checking full state
-                bool newSeenB = seenB || (neighbor == mustPass1);
+                bool newSeenB = seenB || (neighbor == mustPass1);// flags to check if the must pass cities have been passed
                 bool newSeenC = seenC || (neighbor == mustPass2);
-                auto stateKey = make_tuple(neighbor, newSeenB, newSeenC);
+                auto stateKey = make_tuple(neighbor, newSeenB, newSeenC);// allows for multiple states of node, (revisiting the same node with different states)
 
-                if (visited.find(stateKey) == visited.end()) {
+                if (visited.find(stateKey) == visited.end()) {// if the state node has not been visited yet, we can add it to the queue
                     visited.insert(stateKey);
                     vector<string> newPath = path;
                     newPath.push_back(neighbor);
@@ -209,21 +209,22 @@ vector<vector<int>> buildAdjMatrix(const map<string, vector<string>>& graph, int
     return adjMatrix;
 }
 
-// Utility function to check if a vertex can be added to the Hamiltonian path
+// Utility function to check if a vertex can be added to the Hamiltonian path, needed for the recursive function
 bool isSafe(int v, const vector<vector<int>>& graph, vector<int>& path, int pos) {
-    if (graph[path[pos - 1]][v] == 0) return false;
+    if (graph[path[pos - 1]][v] == 0) return false;// check if there is an edge between the last city in the path and the current city
     for (int i = 0; i < pos; i++) if (path[i] == v) return false;
     return true;
 }
 
 // Recursive function to solve the Hamiltonian path problem
 bool hamCycleUtil(const vector<vector<int>>& graph, vector<int>& path, int pos) {
-    if (pos == path.size()) {
-        if (graph[path[pos - 1]][path[0]] == 1) return true;
+    if (pos == path.size()) { 
+        if (graph[path[pos - 1]][path[0]] == 1) return true; // check if the last city in the path is connected to the start city
         else return false;
     }
 
-    for (int v = 1; v < graph.size(); v++) {
+    for (int v = 1; v < graph.size(); v++) {// iterate through all the cities in the graph
+        // check if the current city can be added to the path using isSafe
         if (isSafe(v, graph, path, pos)) {
             path[pos] = v;
             if (hamCycleUtil(graph, path, pos + 1)) return true;
@@ -286,7 +287,7 @@ void bfs(const map<string, vector<string>>& graph, const string& start, map<stri
 }
 
 //function to help print path from a start city to destination
-void printPath(const string& start, const string& destination, const map<string, string>& parent) {
+void printPath(const string& start, const string& destination, const map<string, string>& parent) {// used to prevent repetitive code
     stack<string> path;
     string current = destination;
 
@@ -308,7 +309,7 @@ void printPath(const string& start, const string& destination, const map<string,
 void findBestCity(const map<string, vector<string>>& graph, const string& cityA, const string& cityB, const string& cityC) {
     map<string, int> distA, distB, distC;
     map<string, string> parentA, parentB, parentC;
-
+// search through each city using bfs to find the shortest path from each city to all other cities
     bfs(graph, cityA, distA, parentA);
     bfs(graph, cityB, distB, parentB);
     bfs(graph, cityC, distC, parentC);
@@ -317,17 +318,17 @@ void findBestCity(const map<string, vector<string>>& graph, const string& cityA,
     int minTotalConnections = INT_MAX;
 
     map<string, vector<string>>::const_iterator it;
-    for (it = graph.begin(); it != graph.end(); ++it) {
+    for (it = graph.begin(); it != graph.end(); ++it) { // iterate through the graph to find the best city to meet at
         const string& city = it->first;
 
-        if (city == cityA || city == cityB || city == cityC) {
+        if (city == cityA || city == cityB || city == cityC) {// skip the cities of the friends since they cant meet up at their own cities
             continue;
         }
 
-        if (distA.count(city) > 0 && distB.count(city) > 0 && distC.count(city) > 0) {
-            int total = distA[city] + distB[city] + distC[city];
-            if (total < minTotalConnections) {
-                minTotalConnections = total;
+        if (distA.count(city) > 0 && distB.count(city) > 0 && distC.count(city) > 0) {// check if the city is reachable from all three friends
+            int total = distA[city] + distB[city] + distC[city];// total connections needed to reach the city from all three friends
+            if (total < minTotalConnections) {// if the total connections is less than the current minimum, update the best city and minimum connections
+                minTotalConnections = total;// this is done repetively for all cities in the graph until the best one is found
                 bestCity = city;
             }
         }
