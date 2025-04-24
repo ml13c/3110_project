@@ -355,12 +355,12 @@ void findBestCity(const map<string, vector<string>>& graph, const string& cityA,
     cout << "Total connections required: " << minTotalConnections << "\n";
 }
 int main() {
-    string filename = "flight.txt";
+    string filename = "flight.txt";//file argument to read and construct graph from
     int choice,  maxConnections, x;
     string fromCity, toCity, city1, city2;
     map<string, vector<string>> graph = buildGraph(filename);
-    vector<vector<int>> adjMatrix = buildAdjMatrix(graph, x);
-
+    vector<vector<int>> adjMatrix = buildAdjMatrix(graph, x);//adjacency matrix used for question 3
+//Basic UI for the program using a switch statement to select which problem to solve.
     cout << "Select what you want to do:\n";
     cout << "1. Find the shortest route\n";
     cout << "2. Find route through two cities\n";
@@ -409,7 +409,7 @@ int main() {
             getline(cin, city1);
             cout << "Friend 2 City: ";
             getline(cin, city2);
-            cout << "Finding besty city and route(...\n";
+            cout << "Finding besty city and route for 3 friends...\n";
             findBestCity(graph, fromCity, city1, city2);
             break;
         case 5:
