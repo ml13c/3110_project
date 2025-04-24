@@ -249,7 +249,7 @@ void findCycle(const vector<vector<int>>& graph) {
     for (int cityIdx : path) {
         for (const auto& [city, idx] : cityIndex) {
             if (idx == cityIdx) {
-                cout << city << " ";
+                cout << city << "-> ";
                 break;
             }
         }
