@@ -241,11 +241,10 @@ void findCycle(const vector<vector<int>>& graph) {
     path[0] = 0;
 
     if (!hamCycleUtil(graph, path, 1)) {
-        cout << "No Hamiltonian cycle exists." << endl;
+        cout << "No route exists." << endl;
         return;
     }
 
-    cout << "Hamiltonian cycle found: ";
     for (int cityIdx : path) {
         for (const auto& [city, idx] : cityIndex) {
             if (idx == cityIdx) {
@@ -255,6 +254,7 @@ void findCycle(const vector<vector<int>>& graph) {
         }
     }
     cout << endl;
+    cout << "Smallest number of connections: " << path.size() <<endl;
 }
 
 /* Question 4: Find the best city to meet at for three friends.
