@@ -1,6 +1,6 @@
-CSCE 3110.501  Project:Team 1
-Haley Kang (hjk0056)
-Mario Onofrio
+CSCE 3110.501  Project:Team 1 <br>
+Haley Kang (hjk0056)<br>
+Mario Onofrio<br>
 Marcus Lara Sanchez
 
 In this Project we are tasked with designing and proving a solution to the following questions:
@@ -27,10 +27,10 @@ Compile/Run:
 1. Navigate to directory.
 2. Make sure the input text file is within the directory and is called "flight.txt" since this 
    is hardcoded into our program.
-3. To compile type:
+3. To compile type:<br>
    g++ main.cpp
 
-4. To run compiled program type:
+4. To run compiled program type:<br>
    ./a.out
 
 Note:
