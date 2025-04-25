@@ -216,15 +216,14 @@ bool isSafe(int v, const vector<vector<int>>& graph, vector<int>& path, int pos)
     return true;
 }
 
-// Recursive function to solve the Hamiltonian path problem
+// Recursive function to solve the problem
 bool hamCycleUtil(const vector<vector<int>>& graph, vector<int>& path, int pos) {
-    if (pos == path.size()) { 
-        if (graph[path[pos - 1]][path[0]] == 1) return true; // check if the last city in the path is connected to the start city
-        else return false;
+    if (pos == path.size()) {
+        return graph[path[pos - 1]][path[0]] == 1;
     }
 
-    for (int v = 1; v < graph.size(); v++) {// iterate through all the cities in the graph
-        // check if the current city can be added to the path using isSafe
+    for (int v = 0; v < graph.size(); v++) {
+        if (v == path[0]) continue;
         if (isSafe(v, graph, path, pos)) {
             path[pos] = v;
             if (hamCycleUtil(graph, path, pos + 1)) return true;
@@ -235,10 +234,11 @@ bool hamCycleUtil(const vector<vector<int>>& graph, vector<int>& path, int pos) 
     return false;
 }
 
-// function to find a Hamiltonian cycle and print the solution
-void findCycle(const vector<vector<int>>& graph) {
+// function to find a route and print the solution
+void findCycle(const vector<vector<int>>& graph, const string start) {
     vector<int> path(graph.size(), -1);
-    path[0] = 0;
+    int startIdx = cityIndex.at(start);
+    path[0] = startIdx;
 
     if (!hamCycleUtil(graph, path, 1)) {
         cout << "No route exists." << endl;
@@ -254,7 +254,7 @@ void findCycle(const vector<vector<int>>& graph) {
         }
     }
     cout << endl;
-    cout << "Smallest number of connections: " << path.size() <<endl;
+    cout << "Smallest number of connections: " << path.size();
 }
 
 /* Question 4: Find the best city to meet at for three friends.
@@ -400,7 +400,7 @@ int main() {
             cout << "Select City you want to start off and end up back in\n";
             getline(cin, fromCity);
             cout << "Finding all possible cities...\n";
-            findCycle(adjMatrix);
+            findCycle(adjMatrix, fromCity);
             break;
         case 4:
             cout << "Input three cities to find min path for each\n";
