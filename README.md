@@ -33,7 +33,7 @@ Compile/Run:
 4. To run compiled program type:<br>
    ./a.out
 
-Note:
+Note:<br>
    If using a cell machine, the climit library must be included. This was one of the problems
    we had to fix, and it is included into the code. This code was built and tested mainly on a
    windows operating system through vs code.
